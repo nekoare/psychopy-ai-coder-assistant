@@ -58,6 +58,9 @@ Repository = "https://github.com/nekoare/psychopy-ai-coder-assistant"
 [project.entry-points."psychopy.plugins"]
 ai_coder_assistant = "psychopy_ai_coder_assistant"
 
+[project.scripts]
+ai-coder-assistant = "psychopy_ai_coder_assistant.cli:main"
+
 [tool.setuptools]
 package-dir = {"" = "src"}
 
