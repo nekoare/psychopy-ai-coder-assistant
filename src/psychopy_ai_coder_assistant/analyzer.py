@@ -205,7 +205,9 @@ class CodeAnalyzer:
         # more important suggestions (failing prioritization test).
         best_map: Dict[tuple, CodeSuggestion] = {}
         for s in suggestions:
-            key = (s.category, s.original_code)
+            # original_code が空/未指定の場合は区別用に title をキーへフォールバック
+            orig = (s.original_code or '').strip()
+            key = (s.category, orig if orig else s.title)
             current = best_map.get(key)
             if current is None or s.priority > current.priority:
                 best_map[key] = s
