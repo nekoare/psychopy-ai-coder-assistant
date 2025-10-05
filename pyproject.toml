@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "psychopy-ai-coder-assistant"
+version = "0.1.0"
+description = "AI-powered code analysis and optimization assistant for PsychoPy Coder"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "nekoa", email = "kiichiro.kat@gmail.com"}
+]
+keywords = ["psychopy", "ai", "code-analysis", "assistant"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = [
+    "psychopy>=2023.1.0",
+    "requests>=2.25.0",
+    "wxpython>=4.1.0",
+    "openai>=1.0.0",
+    "google-generativeai>=0.3.0",
+    "anthropic>=0.7.0",
+    "tiktoken>=0.5.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov",
+    "black",
+    "flake8",
+    "mypy",
+]
+
+[project.urls]
+# NOTE: Update these URLs after creating the GitHub repository.
+Homepage = "https://github.com/nekoare/psychopy-ai-coder-assistant"
+Documentation = "https://github.com/nekoare/psychopy-ai-coder-assistant#readme"
+Repository = "https://github.com/nekoare/psychopy-ai-coder-assistant"
+"Bug Tracker" = "https://github.com/nekoare/psychopy-ai-coder-assistant/issues"
+
+[project.entry-points."psychopy.plugins"]
+ai_coder_assistant = "psychopy_ai_coder_assistant"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
