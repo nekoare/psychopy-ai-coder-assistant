@@ -51,6 +51,12 @@ pip install psychopy-ai-coder-assistant
 
 # PsychoPy Coder プラグインとしてフル利用
 pip install "psychopy-ai-coder-assistant[psychopy]"
+
+# 追加 LLM 拡張 (Gemini, tiktoken 等) を Python 3.9+ で使う
+pip install "psychopy-ai-coder-assistant[llm_extras]"
+
+# 両方まとめて
+pip install "psychopy-ai-coder-assistant[psychopy,llm_extras]"
 ```
 
 ### Standalone PsychoPy へのローカルソース導入（未公開開発版）
