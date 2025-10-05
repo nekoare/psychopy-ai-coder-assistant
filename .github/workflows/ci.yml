@@ -31,7 +31,7 @@ jobs:
           python -m pip install pytest pytest-cov
       - name: Run tests
         run: |
-          pytest -q --disable-warnings --maxfail=1
+          pytest
 
   build-and-publish:
     needs: test
