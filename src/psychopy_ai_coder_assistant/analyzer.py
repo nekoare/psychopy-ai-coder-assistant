@@ -200,19 +200,19 @@ class CodeAnalyzer:
         
     def _filter_and_prioritize(self, suggestions: List[CodeSuggestion]) -> List[CodeSuggestion]:
         """Filter duplicates and sort by priority."""
-        # Remove duplicates based on original_code
-        seen = set()
-        filtered = []
-        
-        for suggestion in suggestions:
-            key = (suggestion.category, suggestion.original_code)
-            if key not in seen:
-                seen.add(key)
-                filtered.append(suggestion)
-                
-        # Sort by priority (descending) then by category
-        filtered.sort(key=lambda x: (-x.priority, x.category))
-        
+        # Consolidate by (category, original_code) keeping the HIGHEST priority
+        # Previous implementation kept the first occurrence, which could discard
+        # more important suggestions (failing prioritization test).
+        best_map: Dict[tuple, CodeSuggestion] = {}
+        for s in suggestions:
+            key = (s.category, s.original_code)
+            current = best_map.get(key)
+            if current is None or s.priority > current.priority:
+                best_map[key] = s
+
+        filtered = list(best_map.values())
+        # Sort by priority (descending) then by category for stable ordering
+        filtered.sort(key=lambda x: (-x.priority, x.category, x.title))
         return filtered[:10]  # Limit to top 10 suggestions
         
     def refresh_configuration(self) -> None:
