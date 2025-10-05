@@ -102,8 +102,9 @@ class TestPluginIntegration(unittest.TestCase):
     def test_plugin_privacy_warning(self, mock_wx):
         """Test privacy warning display."""
         mock_wx.NewIdRef.return_value = 12345
-        mock_wx.MessageBox = Mock(return_value=mock_wx.YES)
+        # 先に YES センチネルを設定してから MessageBox の戻り値に使う
         mock_wx.YES = 'YES'
+        mock_wx.MessageBox = Mock(return_value=mock_wx.YES)
         
         plugin = AICoderAssistantPlugin(self.mock_coder_frame)
         plugin.config_manager.is_configured = Mock(return_value=True)
