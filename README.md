@@ -1,1 +1,0 @@
-# psychopy-ai-coder-assistant
