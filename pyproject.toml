@@ -25,9 +25,7 @@ classifiers = [
     "Topic :: Scientific/Engineering",
 ]
 dependencies = [
-    "psychopy>=2023.1.0",
     "requests>=2.25.0",
-    "wxpython>=4.1.0",
     "openai>=1.0.0",
     "google-generativeai>=0.3.0",
     "anthropic>=0.7.0",
@@ -41,6 +39,10 @@ dev = [
     "black",
     "flake8",
     "mypy",
+]
+psychopy = [
+    "psychopy>=2023.1.0",
+    "wxpython>=4.1.0"
 ]
 
 [project.urls]

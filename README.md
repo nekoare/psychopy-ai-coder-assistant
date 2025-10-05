@@ -46,7 +46,11 @@ The PsychoPy AI Coder Assistant helps researchers and developers write more effi
 ### Installation
 
 ```bash
+# 最小（LLM解析・ローカルパターンのみ）
 pip install psychopy-ai-coder-assistant
+
+# PsychoPy Coder プラグインとしてフル利用
+pip install "psychopy-ai-coder-assistant[psychopy]"
 ```
 
 ### Standalone PsychoPy へのローカルソース導入（未公開開発版）
@@ -64,7 +68,8 @@ pip install psychopy-ai-coder-assistant
     export PY_APP=/opt/PsychoPy/python   # 上で確認したパスに置き換え
     git clone https://github.com/nekoare/psychopy-ai-coder-assistant.git
     cd psychopy-ai-coder-assistant
-    "$PY_APP" -m pip install -e .
+        # PsychoPy 依存を含める場合
+        "$PY_APP" -m pip install -e .[psychopy]
     ```
 
 3. 再度 Standalone PsychoPy を起動し、Tools メニューに AI Assistant が表示されるか確認。
@@ -212,7 +217,7 @@ pip install -e .
     export PY_APP=/opt/PsychoPy/python   # 例
     git clone https://github.com/nekoare/psychopy-ai-coder-assistant.git
     cd psychopy-ai-coder-assistant
-    "$PY_APP" -m pip install -e .
+    "$PY_APP" -m pip install -e .[psychopy]
     ```
 
 PyPI 公開前でもこの手順で利用可能です。`-e` を外せば固定インストールになります。
