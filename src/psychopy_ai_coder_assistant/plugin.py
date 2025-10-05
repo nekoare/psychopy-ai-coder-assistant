@@ -1,13 +1,52 @@
-"""
-Main plugin class for PsychoPy AI Coder Assistant
+"""Main plugin class for PsychoPy AI Coder Assistant.
+
+This module is imported by tests even when optional GUI dependencies (wxPython,
+PsychoPy) are not installed. To keep the core package installable without the
+heavy GUI stack, we gracefully degrade when those libraries are missing. The
+real PsychoPy integration is only active inside a running PsychoPy Coder
+session. Unit tests patch the ``wx`` symbol, so a lightweight stub is enough
+for import-time success.
 """
 
-import wx
-from typing import Optional, Dict, Any
-from psychopy import app
-from psychopy.app.coder import CoderFrame
+from typing import Optional
 
-from .ui import AIAssistantPanel, AISettingsDialog
+# ---------------------------------------------------------------------------
+# Optional imports with fallbacks
+# ---------------------------------------------------------------------------
+try:  # pragma: no cover - normal path when extras installed
+    import wx  # type: ignore
+except Exception:  # pragma: no cover - executed only in minimal env
+    class _WxStub:  # minimal attribute surface used by plugin & tests
+        OK = 0
+        ICON_INFORMATION = 0
+        ICON_ERROR = 0
+        ICON_WARNING = 0
+        YES = 1
+        YES_NO = 2
+
+        class ArtProvider:  # noqa: D401
+            @staticmethod
+            def GetBitmap(*_a, **_k):
+                return None
+
+        class Menu:  # simple placeholder
+            pass
+
+        def NewIdRef(self):  # mimic wx.NewIdRef()
+            return 0
+
+        def MessageBox(self, *_a, **_k):  # mimic wx.MessageBox()
+            return self.OK
+
+    wx = _WxStub()  # type: ignore
+
+try:  # pragma: no cover
+    from psychopy.app.coder import CoderFrame  # type: ignore
+except Exception:  # pragma: no cover - fallback when psychopy absent
+    class CoderFrame:  # minimal placeholder for type hints
+        pass
+
+from .ui import AIAssistantPanel, AISettingsDialog  # GUI components (optional at runtime)
 from .analyzer import CodeAnalyzer
 from .config import ConfigManager
 
@@ -20,9 +59,12 @@ class AICoderAssistantPlugin:
         self.config_manager = ConfigManager()
         self.code_analyzer = CodeAnalyzer(self.config_manager)
         self.assistant_panel: Optional[AIAssistantPanel] = None
-        self.menu_id = wx.NewIdRef()
-        self.toolbar_id = wx.NewIdRef()
-        self.settings_id = wx.NewIdRef()
+
+        # ``wx`` could be a stub; guard attribute access defensively
+        new_id = getattr(wx, 'NewIdRef', lambda: 0)
+        self.menu_id = new_id()
+        self.toolbar_id = new_id()
+        self.settings_id = new_id()
         
     def register(self) -> None:
         """Register the plugin with PsychoPy Coder."""
@@ -35,7 +77,7 @@ class AICoderAssistantPlugin:
         
     def _add_menu_items(self) -> None:
         """Add AI Assistant menu items to Coder."""
-        if not self.coder_frame or not hasattr(self.coder_frame, 'menuBar'):
+        if not self.coder_frame or not hasattr(self.coder_frame, 'menuBar') or wx is None:
             return
             
         # Create Tools menu if it doesn't exist
@@ -65,7 +107,7 @@ class AICoderAssistantPlugin:
         
     def _add_toolbar_button(self) -> None:
         """Add AI Assistant button to toolbar."""
-        if not self.coder_frame or not hasattr(self.coder_frame, 'toolbar'):
+        if not self.coder_frame or not hasattr(self.coder_frame, 'toolbar') or wx is None:
             return
             
         toolbar = self.coder_frame.toolbar
@@ -82,7 +124,7 @@ class AICoderAssistantPlugin:
         
     def _create_assistant_panel(self) -> None:
         """Create the AI assistant side panel."""
-        if not self.coder_frame:
+        if not self.coder_frame or wx is None:
             return
             
         # Create panel in the right side of the coder frame
@@ -94,9 +136,9 @@ class AICoderAssistantPlugin:
             self.coder_frame.mainSizer.Add(self.assistant_panel, 0, wx.EXPAND | wx.ALL, 5)
             self.coder_frame.Layout()
             
-    def on_ai_review(self, event: wx.Event) -> None:
+    def on_ai_review(self, event) -> None:  # event type left untyped for stub compatibility
         """Handle AI code review request."""
-        if not self.coder_frame or not self.assistant_panel:
+        if not self.coder_frame or not self.assistant_panel or wx is None:
             return
             
         # Check if API is configured
@@ -138,7 +180,7 @@ class AICoderAssistantPlugin:
         # Analyze code asynchronously
         self.assistant_panel.analyze_code(code)
         
-    def on_settings(self, event: wx.Event) -> None:
+    def on_settings(self, event) -> None:  # event type left untyped for stub compatibility
         """Handle settings dialog request."""
         dialog = AISettingsDialog(self.coder_frame, self.config_manager)
         dialog.ShowModal()
