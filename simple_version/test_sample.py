@@ -12,13 +12,20 @@ AIアシスタントがこれらの問題を正しく検出し、
 改善提案を提供するかテストするためのコードです。
 """
 
-import psychopy.visual as visual
-import psychopy.core as core
-import psychopy.event as event
+try:
+    import psychopy.visual as visual
+    import psychopy.core as core
+    import psychopy.event as event
+except ImportError:  # pragma: no cover
+    visual = core = event = None
 import time
 import random
 
 # ❌ 問題1: マジックナンバーの使用
+if visual is None:
+    import unittest
+    raise unittest.SkipTest("psychopy not installed; skipping sample integration test")
+
 win = visual.Window(size=(800, 600), fullscr=False)
 
 # ❌ 問題2: マジックナンバーの使用  
