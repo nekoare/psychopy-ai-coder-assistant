@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
-    {name = "nekoa", email = "kiichiro.kat@gmail.com"}
+    {name = "nekoare", email = "kiichiro.kat@gmail.com"}
 ]
 keywords = ["psychopy", "ai", "code-analysis", "assistant"]
 classifiers = [

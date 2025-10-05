@@ -6,7 +6,7 @@ optimization suggestions, and Builder component mapping recommendations.
 """
 
 __version__ = "0.1.0"
-__author__ = "AI Assistant Developer"
+__author__ = "nekoare"
 
 from .plugin import AICoderAssistantPlugin
 

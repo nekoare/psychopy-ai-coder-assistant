@@ -217,6 +217,34 @@ pip install -e .
 
 PyPI 公開前でもこの手順で利用可能です。`-e` を外せば固定インストールになります。
 
+## 🧩 PsychoPy プラグインとしての利用方法（要点）
+
+1. PsychoPy を起動（Coder 画面）
+2. 本パッケージをインストール（pip または Standalone 内部 Python）
+3. 再起動後、メニュー / Tools に "AI Assistant" が表示される
+4. 分析したいスクリプトを開き、ショートカット `Ctrl+Shift+A`（設定により異なる想定）で解析
+5. サイドパネルにカテゴリ別 (Performance / Best Practices / Privacy / Builder Mapping) の提案が出る
+
+問題なく表示されない場合:
+- インストール先 Python が PsychoPy 実行時と一致しているか確認
+- `python -c "import importlib.metadata as md;print([e.name for e in md.entry_points(group='psychopy.plugins')])"` で `ai_coder_assistant` が含まれるかを確認
+
+## ❓ PyPI とは何か / なぜ使うか
+
+PyPI (Python Package Index) は Python パッケージの公式公開リポジトリです。これに公開することで:
+- `pip install psychopy-ai-coder-assistant` だけで簡単インストール
+- 依存関係解決（PsychoPy / wxPython など）を自動化
+- バージョン管理（0.1.0 → 0.1.1 ...）が統一
+公開不要なプライベート配布であれば GitHub からのクローン + `pip install -e .` でも利用可能です。
+
+## 🗂 補助ドキュメント
+
+- `INSTALLATION.md` 詳細インストール
+- `RELEASE_CHECKLIST.md` リリース手順
+- `CHANGELOG.md` 変更履歴
+- `CONTRIBUTING.md` 開発貢献ガイド
+
+
 ## 📚 Documentation
 
 - **[Installation Guide](INSTALLATION.md)** - Detailed setup instructions
